@@ -10,4 +10,4 @@ root = tktools.Window('Fedit ('+str(version)+')').window_raw()
 
 
 root.mainloop()
-print('Exit')
+print('Exiting')
