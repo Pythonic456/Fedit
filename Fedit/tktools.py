@@ -13,3 +13,10 @@ class Window:
         
     def window_raw(self):
         return self.win
+
+class TextEditor:
+    def __init__(self, parent):
+        self.parent = parent
+        self.widget = tk.Text(self.parent)
+    def widget_raw(self):
+        return self.widget
