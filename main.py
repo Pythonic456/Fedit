@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-
 import tktools
 from tktools import tk
 
