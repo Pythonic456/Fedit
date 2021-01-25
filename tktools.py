@@ -20,3 +20,15 @@ class TextEditor:
         self.widget = tk.Text(self.parent)
     def widget_raw(self):
         return self.widget
+
+class MenuBar:
+    def __init__(self, parent):
+        self.parent = parent
+        self.buttons = {}
+    def add_button(self, button_name, command, text):
+        button = tk.Button(self.parent, text=text, command=command)
+        self.buttons[button_name] = {'cmd': command, 'text': text, 'raw': button}
+    def raw_button(self, button_name):
+        return self.buttons[button_name]['raw']
+
+        
