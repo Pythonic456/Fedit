@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import filedialog as tkfd
 
 root_window = False
 class Window:
@@ -28,6 +29,10 @@ class MenuBar:
     def add_button(self, button_name, command, text):
         button = tk.Button(self.parent, text=text, command=command)
         self.buttons[button_name] = {'cmd': command, 'text': text, 'raw': button}
+    def pack_button(self, button_name, *args, **kwargs):
+        self.buttons[button_name]['raw'].pack(args, kwargs)
+    def grid_button(self, button_name, *args, **kwargs):
+        self.buttons[button_name]['raw'].grid(kwargs)
     def raw_button(self, button_name):
         return self.buttons[button_name]['raw']
 
