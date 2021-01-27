@@ -25,9 +25,14 @@ class TextEditor:
         self.widget.pack(kwargs)
     def grid(self, *args, **kwargs):
         self.widget.grid(kwargs)
+    def clear_text(self, *args, **kwargs):
+        self.widget.delete(*args, **kwargs)
     def set_text(self, text, *args, **kwargs):
-        self.widget.delete(0.0)
+        self.clear_text(0.0)
         self.widget.insert(0.0, text, args, kwargs)
+    def get_text(self, *args, **kwargs):
+        text = self.widget.get(*args, **kwargs)
+        return text
 
 class MenuBar:
     def __init__(self, parent):
