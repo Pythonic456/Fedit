@@ -21,6 +21,13 @@ class TextEditor:
         self.widget = tk.Text(self.parent)
     def widget_raw(self):
         return self.widget
+    def pack(self, *args, **kwargs):
+        self.widget.pack(kwargs)
+    def grid(self, *args, **kwargs):
+        self.widget.grid(kwargs)
+    def set_text(self, text, *args, **kwargs):
+        self.widget.delete(0.0)
+        self.widget.insert(0.0, text, args, kwargs)
 
 class MenuBar:
     def __init__(self, parent):

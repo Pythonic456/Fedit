@@ -17,21 +17,22 @@ root = tktools.Window('Fedit ('+str(version)+')').window_raw()
 
 frame_maintextedit = tk.Frame(root)
 frame_menubar = tk.Frame(root)
+widget_maintextedit = tktools.TextEditor(frame_maintextedit)
 
 
 menubar = tktools.MenuBar(frame_menubar)
 
 
 def open_file():
-    global ftypes
+    global ftypes, widget_maintextedit
     f_name = tkfd.askopenfilename(filetypes=ftypes, initialdir=os.path.expanduser('~'))
-    print(f_name)
+    f_text = open(f_name, 'r').read()
+    widget_maintextedit.set_text(text=f_text)
+
 
 menubar.add_button('open', open_file, 'Open')
 
 menubar.grid_button('open', row=0, column=0)
-
-widget_maintextedit = tktools.TextEditor(frame_maintextedit).widget_raw()
 
 
 widget_maintextedit.pack(expand=1, fill='both')
