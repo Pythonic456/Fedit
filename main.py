@@ -1,7 +1,7 @@
 import tktools, os
 from tktools import tk, tkfd
 
-version = '0.0.0.1'
+version = '0.0.0.2'
 ftypes = [
     ('All files', '*'),
     ('Python code files', '*.py'), 
@@ -25,19 +25,17 @@ menubar = tktools.MenuBar(frame_menubar)
 
 
 def verify_f_name(f_name):
-    if f_name in [None, ()]:
-        return True
-    return False
+    if f_name in [None, (), '']:
+        return False
+    return True
 
 def open_file():
     global ftypes, widget_maintextedit, initial_dir
     f_name = tkfd.askopenfilename(filetypes=ftypes, initialdir=initial_dir)
-    if verify_f_name(f_name):
+    if not verify_f_name(f_name):
         return
-    print(f_name)
-    initial_dir = f_name.split('/')
-    initial_dir.pop(-1)
-    initial_dir = '/'.join(initial_dir)
+    print('Opening', f_name)
+    initial_dir = os.path.dirname(f_name)
     f_text = open(f_name, 'r').read()
     widget_maintextedit.set_text(text=f_text)
 
@@ -46,9 +44,8 @@ def save_file():
     f_name = tkfd.asksaveasfilename(filetypes=ftypes, initialdir=initial_dir)
     if not verify_f_name(f_name):
         return
-    initial_dir = f_name.split('/')
-    initial_dir.pop(-1)
-    initial_dir = '/'.join(initial_dir)
+    print('Opening', f_name)
+    initial_dir = os.path.dirname(f_name)
     text = widget_maintextedit.get_text(0.0)
     f_obj = open(f_name, 'w')
     f_obj.write(text)
