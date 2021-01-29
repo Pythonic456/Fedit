@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import filedialog as tkfd
+import os
 
 root_window = False
 class Window:
@@ -15,10 +16,25 @@ class Window:
     def window_raw(self):
         return self.win
 
+
+def verify_f_name(f_name):
+    if f_name in [None, (), '']:
+        return False
+    return True
+
 class TextEditor:
     def __init__(self, parent):
         self.parent = parent
         self.widget = tk.Text(self.parent)
+        self.ftypes = [
+            ('All files', '*'),
+            ('Python code files', '*.py'), 
+            ('Perl code files', '*.pl;*.pm'),  # semicolon trick
+            ('Java code files', '*.java'), 
+            ('C++ code files', '*.cpp;*.h'),   # semicolon trick
+            ('Text files', '*.txt'),  
+        ]
+        self.initial_dir = os.path.expanduser('~')
     def widget_raw(self):
         return self.widget
     def pack(self, *args, **kwargs):
@@ -33,6 +49,28 @@ class TextEditor:
     def get_text(self, *args, **kwargs):
         text = self.widget.get(*args, **kwargs)
         return text
+    def open_file(self, *args, **kwargs):
+        #args and kwargs to this function are thrown away
+        global initial_dir
+        f_name = tkfd.askopenfilename(filetypes=self.ftypes, initialdir=self.initial_dir)
+        if not verify_f_name(f_name):
+            return
+        print('Opening', f_name)
+        self.initial_dir = os.path.dirname(f_name)
+        f_text = open(f_name, 'r').read()
+        self.set_text(text=f_text)
+    def save_file(self, *args, **kwargs):
+        #args and kwargs to this function are thrown away
+        global initial_dir
+        f_name = tkfd.asksaveasfilename(filetypes=self.ftypes, initialdir=self.initial_dir)
+        if not verify_f_name(f_name):
+            return
+        print('Saving', f_name)
+        self.initial_dir = os.path.dirname(f_name)
+        text = self.get_text(0.0)
+        f_obj = open(f_name, 'w')
+        f_obj.write(text)
+        f_obj.close()
 
 class MenuBar:
     def __init__(self, parent):
@@ -49,3 +87,5 @@ class MenuBar:
         return self.buttons[button_name]['raw']
 
         
+if __name__=='__main__':
+    print('Run main.py instead of this!')
