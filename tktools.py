@@ -1,6 +1,14 @@
+## Import modules
 import tkinter as tk
 from tkinter import filedialog as tkfd
 import os
+
+
+## Classes
+def verify_f_name(f_name):
+    if f_name in [None, (), '']:
+        return False
+    return True
 
 root_window = False
 class Window:
@@ -17,13 +25,9 @@ class Window:
         return self.win
 
 
-def verify_f_name(f_name):
-    if f_name in [None, (), '']:
-        return False
-    return True
-
 class TextEditor:
     def __init__(self, parent):
+        ## Init
         self.parent = parent
         self.widget = tk.Text(self.parent)
         self.ftypes = [
@@ -36,20 +40,27 @@ class TextEditor:
         ]
         self.initial_dir = os.path.expanduser('~')
     def widget_raw(self):
+        ## Return the raw Tk text widget
         return self.widget
     def pack(self, *args, **kwargs):
+        ## Pack the text widget
         self.widget.pack(kwargs)
     def grid(self, *args, **kwargs):
+        ## Grid the text widget
         self.widget.grid(kwargs)
     def clear_text(self, *args, **kwargs):
+        ## Clear text from text widget
         self.widget.delete(*args, **kwargs)
     def set_text(self, text, *args, **kwargs):
+        ## Clears and sets the text
         self.clear_text(0.0)
         self.widget.insert(0.0, text, args, kwargs)
     def get_text(self, *args, **kwargs):
+        ## Gets the text from the text widget
         text = self.widget.get(*args, **kwargs)
         return text
     def open_file(self, *args, **kwargs):
+        ## Asks for a file to open and shows it in text widget
         #args and kwargs to this function are thrown away
         global initial_dir
         f_name = tkfd.askopenfilename(filetypes=self.ftypes, initialdir=self.initial_dir)
@@ -60,6 +71,8 @@ class TextEditor:
         f_text = open(f_name, 'r').read()
         self.set_text(text=f_text)
     def save_file(self, *args, **kwargs):
+        ## Asks for a file to save the contents of the text widget
+        ## in and saves it there
         #args and kwargs to this function are thrown away
         global initial_dir
         f_name = tkfd.asksaveasfilename(filetypes=self.ftypes, initialdir=self.initial_dir)
@@ -74,16 +87,21 @@ class TextEditor:
 
 class MenuBar:
     def __init__(self, parent):
+        ## Init
         self.parent = parent
         self.buttons = {}
     def add_button(self, button_name, command, text):
+        ## Add a button
         button = tk.Button(self.parent, text=text, command=command)
         self.buttons[button_name] = {'cmd': command, 'text': text, 'raw': button}
     def pack_button(self, button_name, *args, **kwargs):
+        ## Pack a button
         self.buttons[button_name]['raw'].pack(args, kwargs)
     def grid_button(self, button_name, *args, **kwargs):
+        ## Grid a button
         self.buttons[button_name]['raw'].grid(kwargs)
     def raw_button(self, button_name):
+        ## Returns the raw Tk button widget
         return self.buttons[button_name]['raw']
 
         
