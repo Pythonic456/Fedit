@@ -1,6 +1,7 @@
 ## Import modules
 import tkinter as tk
 from tkinter import filedialog as tkfd
+from tkinter import messagebox as tkmb
 import os
 
 
@@ -77,13 +78,26 @@ class TextEditor:
         global initial_dir
         f_name = tkfd.asksaveasfilename(filetypes=self.ftypes, initialdir=self.initial_dir)
         if not verify_f_name(f_name):
-            return
+            return 0
         print('Saving', f_name)
         self.initial_dir = os.path.dirname(f_name)
         text = self.get_text(0.0)
         f_obj = open(f_name, 'w')
         f_obj.write(text)
         f_obj.close()
+        return 1
+    def new_file(self, *args, **kwargs):
+        ## Clears the text widget
+        dscn = tkmb.askyesnocancel('Save file?', 'Do you want to save the file already open?') #dscn = Desicion
+        if dscn == True: #User said yes
+            if self.save_file() == 0:
+                self.new_file()
+                return
+        elif dscn == None: #User cancelled
+            return
+        #User has saved/pressed no
+        self.clear_text(0.0, 'end')
+
 
 class MenuBar:
     def __init__(self, parent):

@@ -18,9 +18,11 @@ menubar = tktools.MenuBar(frame_menubar)
 
 menubar.add_button('open', widget_maintextedit.open_file, 'Open')
 menubar.add_button('save', widget_maintextedit.save_file, 'Save')
+menubar.add_button('new', widget_maintextedit.new_file, 'New')
 
 menubar.grid_button('open', row=0, column=0)
 menubar.grid_button('save', row=0, column=1)
+menubar.grid_button('new', row=0, column=2)
 
 ## Main text editor
 widget_maintextedit.pack(expand=1, fill='both')
