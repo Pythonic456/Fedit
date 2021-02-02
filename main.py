@@ -1,7 +1,7 @@
 import tktools
 from tktools import os, tk
 
-version = '0.0.0.2'
+version = '0.0.0.3'
 
 
 print('Starting Fedit', version)
