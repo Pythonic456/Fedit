@@ -40,6 +40,14 @@ class TextEditor:
             ('Text files', '*.txt'),  
         ]
         self.initial_dir = os.path.expanduser('~')
+        self.curr_file = None
+    def __savefiledata__(self, f_name, data):
+        print('Saving', f_name)
+        self.initial_dir = os.path.dirname(f_name)
+        f_obj = open(f_name, 'w')
+        f_obj.write(data)
+        f_obj.close()
+        self.curr_file = f_name
     def widget_raw(self):
         ## Return the raw Tk text widget
         return self.widget
@@ -63,7 +71,6 @@ class TextEditor:
     def open_file(self, *args, **kwargs):
         ## Asks for a file to open and shows it in text widget
         #args and kwargs to this function are thrown away
-        global initial_dir
         f_name = tkfd.askopenfilename(filetypes=self.ftypes, initialdir=self.initial_dir)
         if not verify_f_name(f_name):
             return
@@ -71,20 +78,22 @@ class TextEditor:
         self.initial_dir = os.path.dirname(f_name)
         f_text = open(f_name, 'r').read()
         self.set_text(text=f_text)
+        self.curr_file = f_name
     def save_file(self, *args, **kwargs):
+        if verify_f_name(self.curr_file):
+            #Save file as currently open file
+            self.__savefiledata__(self.curr_file, self.get_text(0.0))
+        else:
+            #No file currently open
+            self.saveas_file()
+    def saveas_file(self, *args, **kwargs):
         ## Asks for a file to save the contents of the text widget
         ## in and saves it there
         #args and kwargs to this function are thrown away
-        global initial_dir
         f_name = tkfd.asksaveasfilename(filetypes=self.ftypes, initialdir=self.initial_dir)
         if not verify_f_name(f_name):
             return 0
-        print('Saving', f_name)
-        self.initial_dir = os.path.dirname(f_name)
-        text = self.get_text(0.0)
-        f_obj = open(f_name, 'w')
-        f_obj.write(text)
-        f_obj.close()
+        self.__savefiledata__(f_name, self.get_text(0.0))
         return 1
     def new_file(self, *args, **kwargs):
         ## Clears the text widget
@@ -97,6 +106,7 @@ class TextEditor:
             return
         #User has saved/pressed no
         self.clear_text(0.0, 'end')
+        self.curr_file = None
 
 
 class MenuBar:
