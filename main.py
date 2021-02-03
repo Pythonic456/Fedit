@@ -7,11 +7,15 @@ version = '0.0.0.3'
 print('Starting Fedit', version)
 print('Home dir:', os.path.expanduser('~'))
 
-root = tktools.Window('Fedit ('+str(version)+')').window_raw()
+root_title = 'Fedit ('+str(version)+')'
+root = tktools.Window(root_title).window_raw()
 
+def set_root_title(title):
+    root.title(title)
+    root.update()
 ## Main text editor
 frame_maintextedit = tk.Frame(root)
-widget_maintextedit = tktools.TextEditor(frame_maintextedit)
+widget_maintextedit = tktools.TextEditor(frame_maintextedit, root_title, set_root_title)
 
 ## MenuBar
 frame_menubar = tk.Frame(root)

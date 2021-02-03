@@ -27,7 +27,7 @@ class Window:
 
 
 class TextEditor:
-    def __init__(self, parent):
+    def __init__(self, parent, root_title, set_root_title):
         ## Init
         self.parent = parent
         self.widget = tk.Text(self.parent)
@@ -41,6 +41,8 @@ class TextEditor:
         ]
         self.initial_dir = os.path.expanduser('~')
         self.curr_file = None
+        self.set_root_title = set_root_title
+        self.root_title = root_title
     def __savefiledata__(self, f_name, data):
         print('Saving', f_name)
         self.initial_dir = os.path.dirname(f_name)
@@ -48,6 +50,13 @@ class TextEditor:
         f_obj.write(data)
         f_obj.close()
         self.curr_file = f_name
+    def __updatetitle__(self, f_name=None):
+        if f_name == None:
+            f_name = self.curr_file
+        if f_name == None:
+            self.set_root_title(self.root_title)
+        else:
+            self.set_root_title(self.root_title+' - '+f_name)
     def widget_raw(self):
         ## Return the raw Tk text widget
         return self.widget
@@ -79,6 +88,7 @@ class TextEditor:
         f_text = open(f_name, 'r').read()
         self.set_text(text=f_text)
         self.curr_file = f_name
+        self.__updatetitle__()
     def save_file(self, *args, **kwargs):
         if verify_f_name(self.curr_file):
             #Save file as currently open file
@@ -107,6 +117,7 @@ class TextEditor:
         #User has saved/pressed no
         self.clear_text(0.0, 'end')
         self.curr_file = None
+        self.__updatetitle__()
 
 
 class MenuBar:
