@@ -12,12 +12,14 @@ def verify_f_name(f_name):
     return True
 
 root_window = False
+root_window_obj = None
 class Window:
-    def __init__(self, title):
-        global root_window
+    def __init__(self, title, root_win=None):
+        global root_window, root_window_obj
         self.title = title
         if root_window == False:
             self.win = tk.Tk()
+            root_window_obj = self.win
         else:
             self.win = tk.Toplevel()
         self.win.title(self.title)
@@ -118,6 +120,9 @@ class TextEditor:
         self.clear_text(0.0, 'end')
         self.curr_file = None
         self.__updatetitle__()
+    def config(self, **kwargs):
+        print(kwargs)
+        self.widget_raw().config(kwargs)
 
 
 class MenuBar:
@@ -138,6 +143,9 @@ class MenuBar:
     def raw_button(self, button_name):
         ## Returns the raw Tk button widget
         return self.buttons[button_name]['raw']
+    def config_button(self, button_name, *args, **kwargs):
+        self.buttons[button_name]['raw'].config(args, kwargs)
+
 
         
 if __name__=='__main__':
