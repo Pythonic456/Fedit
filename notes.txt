@@ -1,0 +1,3 @@
+For a colour picker:
+# from tkinter import colorchooser
+# colour_tuple = colorchooser.askcolor()

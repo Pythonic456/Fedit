@@ -1,8 +1,8 @@
 import tktools
 from tktools import os, tk
+from tkinter import colorchooser
 
 version = '0.0.1.4'
-
 
 print('Starting Fedit', version)
 print('Home dir:', os.path.expanduser('~'))
@@ -39,7 +39,8 @@ widget_maintextedit.pack(expand=1, fill='both')
 theme_current = False #False=Light True=Dark
 theme_light = '#f5f5f5'
 theme_dark = '#000000'
-def update_theme(theme, text_theme):
+def update_theme(theme, text_theme, custom=0):
+    print('Custom:', custom, 'BG:', theme, 'FG:', text_theme)
     root.config(bg=theme)
     widget_maintextedit.config(bg=theme, fg=text_theme)
     frame_menubar.config(bg=theme)
@@ -57,10 +58,17 @@ def switch_theme():
         update_theme(theme_light, theme_dark)
     root.update()
 
+def set_theme():
+    bg_col = colorchooser.askcolor(title='Choose background colour')[1]
+    fg_col = colorchooser.askcolor(title='Choose foreground colour')[1]
+    update_theme(bg_col, fg_col, custom=1)
+
 def prefs_window():
     win = tktools.Window('Preferences', root_win=root).window_raw()
     button_switch_theme = tk.Button(win, text='Switch Theme', command=switch_theme)
+    button_set_theme = tk.Button(win, text='Set Theme', command=set_theme)
     button_switch_theme.pack(fill='both', expand=1)
+    button_set_theme.pack(fill='both', expand=1)
 
 menubar.add_button('prefs', prefs_window, 'Prefrences')
 update_theme(theme_light, theme_dark)

@@ -121,7 +121,7 @@ class TextEditor:
         self.curr_file = None
         self.__updatetitle__()
     def config(self, **kwargs):
-        print(kwargs)
+        #print(kwargs)
         self.widget_raw().config(kwargs)
 
 
