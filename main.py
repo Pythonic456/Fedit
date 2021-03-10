@@ -2,7 +2,7 @@ import tktools
 from tktools import os, tk
 from tkinter import colorchooser
 
-version = '0.0.1.4'
+version = '0.0.1.5'
 
 print('Starting Fedit', version)
 print('Home dir:', os.path.expanduser('~'))
@@ -42,7 +42,7 @@ theme_dark = '#000000'
 def update_theme(theme, text_theme, custom=0):
     print('Custom:', custom, 'BG:', theme, 'FG:', text_theme)
     root.config(bg=theme)
-    widget_maintextedit.config(bg=theme, fg=text_theme)
+    widget_maintextedit.config(bg=theme, fg=text_theme, insertbackground=text_theme)
     frame_menubar.config(bg=theme)
     for button in menubar.buttons:
         menubar.buttons[button]['raw'].config(bg=theme, fg=text_theme)
