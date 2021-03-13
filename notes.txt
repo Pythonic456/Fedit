@@ -5,3 +5,5 @@ For a colour picker:
 To change the colour of the cursor:
 # textwidget.config(bg='#00ff00', insertbackground='#ff00ff')
 insertbackground is what the colour will be.
+
+In main.py add reversing smooth mode to ## Experimental changing_theme.
