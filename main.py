@@ -93,6 +93,27 @@ def changing_theme_func():
     root.after(10, changing_theme_func)
 #changing_theme_func()
 
+## Config file
+def load_config_file():
+    print('Loading config file...', end=' ')
+    config_file_obj = open(os.path.expanduser('~')+'/.fedit', 'r')
+    config_file = config_file_obj.read()
+    config_file_obj.close()
+    print('Done')
+
+if os.path.isfile(os.path.expanduser('~')+'/.fedit'):
+    load_config_file()
+else:
+    print('First time running Fedit, creating config file...', end=' ')
+    config_file_obj = open(os.path.expanduser('~')+'/.fedit', 'w')
+    print(os.path.expanduser('~')+'/.fedit')
+    import requests
+    data = requests.get('https://smallbytes.pythonanywhere.com/Fedit/newuser')
+    config_file_obj.write(str(data.content, encoding='ascii'))
+    config_file_obj.close()
+    load_config_file()
+
+    
 
 
 ## Packing
