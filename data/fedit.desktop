@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Fedit
+Comment=A Simple text editor with python tkinter
+Exec=fedit
+Icon=fedit
+Terminal=false
+Type=Application
+Categories=Utility;
+Name[en_IN]=Fedit
