@@ -11,9 +11,9 @@ if(len(sys.argv)>=1 and sys.argv[1] == 'install'):
       author='Pythonic456',
       data_files=[
         ('/usr/share/applications', ['fedit/fedit.desktop']),
-        ('/usr/share/fedit/',['fedit/fedit.py']),
-        ('/usr/share/fedit/',['fedit/fedit.png']),
-        ('/usr/share/fedit/',['fedit/tktools.py'])
+        ('/usr/share/fedit/',['fedit.py']),
+        ('/usr/share/fedit/',['fedit.png']),
+        ('/usr/share/fedit/',['tktools.py'])
         ]
     )
 if(len(sys.argv)>=1 and sys.argv[1] == 'remove'):
