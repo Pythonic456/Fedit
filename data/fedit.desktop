@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Fedit
 Comment=A Simple text editor with python tkinter
-Exec=/usr/bin/python3 /usr/share/fedit/fedit.py
+Exec=/usr/bin/python3 /usr/share/fedit/main.py
 Icon=/usr/share/fedit/fedit.png
 Terminal=false
 Type=Application
