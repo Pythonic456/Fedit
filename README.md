@@ -1,5 +1,12 @@
-To run Fedit, run `python3 main.py` in the root directory
-of this repositry.
+FEDIT - Pythonic456
 
-To install Fedit, run `sudo python3 setup.py install`.
-To uninstall Fedit, run `sudo python3 setup.py remove`.
+To install:
+`cd ~`
+`git clone https://github.com/Pythonic456/Fedit/`
+`cd ~/Fedit/`
+`sudo python3 setup.py install`
+
+To uninstall:
+`cd ~/Fedit/`
+`sudo python3 setup.py remove`
+`rm -r ~/Fedit/`

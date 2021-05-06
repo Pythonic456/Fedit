@@ -2,7 +2,7 @@
 import tkinter as tk
 from tkinter import filedialog as tkfd
 from tkinter import messagebox as tkmb
-import os
+import os, sys
 
 
 ## Classes

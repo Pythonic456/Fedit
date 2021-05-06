@@ -1,9 +1,0 @@
-For a colour picker:
-# from tkinter import colorchooser
-# colour_tuple = colorchooser.askcolor()
-
-To change the colour of the cursor:
-# textwidget.config(bg='#00ff00', insertbackground='#ff00ff')
-insertbackground is what the colour will be.
-
-In main.py add reversing smooth mode to ## Experimental changing_theme.
