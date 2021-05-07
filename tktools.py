@@ -98,6 +98,7 @@ class TextEditor:
         else:
             #No file currently open
             self.saveas_file()
+        self.__updatetitle__()
     def saveas_file(self, *args, **kwargs):
         ## Asks for a file to save the contents of the text widget
         ## in and saves it there
@@ -105,11 +106,12 @@ class TextEditor:
         f_name = tkfd.asksaveasfilename(filetypes=self.ftypes, initialdir=self.initial_dir)
         if not verify_f_name(f_name):
             return 0
-        self.__savefiledata__(f_name, self.get_text(0.0))
+        self.__savefiledata__(f_name, self.get_text(0.0, 'end'))
         return 1
+        self.__updatetitle__()
     def new_file(self, *args, **kwargs):
         ## Clears the text widget
-        dscn = tkmb.askyesnocancel('Save file?', 'Do you want to save the file already open?') #dscn = Desicion
+        dscn = tkmb.askyesnocancel('Save file?', 'Do you want to save the file already open?')
         if dscn == True: #User said yes
             if self.save_file() == 0:
                 self.new_file()
@@ -146,6 +148,26 @@ class MenuBar:
     def config_button(self, button_name, *args, **kwargs):
         self.buttons[button_name]['raw'].config(args, kwargs)
 
+class LabelBar:
+    def __init__(self, parent):
+        ## Init
+        self.parent = parent
+        self.labels = {}
+    def add_label(self, label_name, text):
+        ## Add a label
+        label = tk.Label(self.parent, text=text)
+        self.labels[label_name] = {'text': text, 'raw': label}
+    def pack_label(self, label_name, *args, **kwargs):
+        ## Pack a label
+        self.labels[label_name]['raw'].pack(args, kwargs)
+    def grid_label(self, label_name, *args, **kwargs):
+        ## Grid a label
+        self.labels[label_name]['raw'].grid(kwargs)
+    def raw_label(self, label_name):
+        ## Returns the raw Tk label widget
+        return self.labels[label_name]['raw']
+    def config_label(self, label_name, *args, **kwargs):
+        self.labels[label_name]['raw'].config(kwargs)
 
         
 if __name__=='__main__':
