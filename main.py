@@ -103,6 +103,26 @@ switch_theme()
 
 menubar.grid_button('prefs', row=0, column=4)
 
+
+def emoji_window():
+    def chunks(lst, n):
+        """Yield successive n-sized chunks from lst."""
+        for i in range(0, len(lst), n):
+            yield lst[i:i + n]
+    
+    # Emoticons (Unicode block): U+1F600 to U+1F64F
+    emojis = range(0x1F600, 0x1F64F + 1)
+    
+    win = tktools.Window('Emojis', root_win=root).window_raw()
+    for row, echunk in enumerate(chunks(emojis, 10)):
+        for col, ecode in enumerate(echunk):
+            b = tk.Button(win, text=chr(ecode),
+                command=lambda ecode=ecode: widget_maintextedit.widget.insert(tk.INSERT, chr(ecode)))
+            b.grid(column=col, row=row)
+menubar.add_button('emojis', emoji_window, '☺')
+menubar.grid_button('emojis', row=0, column=5)
+
+
 ## Experimental
 changing_theme = [0, 0, 0]
 def changing_theme_func():
