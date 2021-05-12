@@ -20,21 +20,20 @@ def set_root_title(title):
 def load_config_file():
     global config
     print('Loading config file...', end=' ')
-    config_file_obj = open(os.path.expanduser('~')+'/.fedit', 'r')
-    config_file = config_file_obj.read()
-    config_file_obj.close()
-    config = {}
-    for line in config_file.split('\n'):
-        tup = line.split(',')
-        config[tup[0]] = ','.join(tup[1:])
-    print('Done')
+    with open(os.path.expanduser('~/.fedit'), 'r') as config_file_obj:
+        config = {}
+        for line in config_file_obj:
+            tup = line.split(',', 1)
+            # Use rstrip() to remove trailing newline
+            config[tup[0]] = tup[1].rstrip()
+    print('Done', config)
 
-if os.path.isfile(os.path.expanduser('~')+'/.fedit'):
+if os.path.isfile(os.path.expanduser('~/.fedit')):
     load_config_file()
 else:
     print('First time running Fedit, creating config file...', end=' ')
-    config_file_obj = open(os.path.expanduser('~')+'/.fedit', 'w')
-    print(os.path.expanduser('~')+'/.fedit')
+    config_file_obj = open(os.path.expanduser('~/.fedit'), 'w')
+    print(os.path.expanduser('~/.fedit'))
     import requests
     data = requests.get('https://smallbytes.pythonanywhere.com/Fedit/newuser')
     config_file_obj.write(str(data.content, encoding='ascii'))
