@@ -73,8 +73,8 @@ class TextEditor:
         self.widget.delete(*args, **kwargs)
     def set_text(self, text, *args, **kwargs):
         ## Clears and sets the text
-        self.clear_text(0.0)
-        self.widget.insert(0.0, text, args, kwargs)
+        self.clear_text(0.0, 'end')
+        self.widget.insert(0.0, text)
     def get_text(self, *args, **kwargs):
         ## Gets the text from the text widget
         text = self.widget.get(*args, **kwargs)
@@ -171,4 +171,5 @@ class LabelBar:
 
         
 if __name__=='__main__':
-    print('Run main.py instead of this!')
+    print('Run main.py instead of this! Starting main.py anyway...')
+    import main
