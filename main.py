@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 import tktools
 from tktools import os, tk, sys
 from tkinter import colorchooser, messagebox
@@ -6,7 +7,8 @@ from ast import literal_eval
 version = '0.0.1.5'
 
 print('Starting Fedit', version)
-print('Home dir:', os.path.expanduser('~'))
+FNCONF = os.path.expanduser('~/.fedit')
+print('Config file:', FNCONF)
 
 root_title = 'Fedit ('+str(version)+')'
 root = tktools.Window(root_title).window_raw()
@@ -20,7 +22,7 @@ def set_root_title(title):
 def load_config_file():
     global config
     print('Loading config file...', end=' ')
-    with open(os.path.expanduser('~/.fedit'), 'r') as config_file_obj:
+    with open(FNCONF, 'r') as config_file_obj:
         config = {}
         for line in config_file_obj:
             tup = line.split(',', 1)
@@ -28,12 +30,12 @@ def load_config_file():
             config[tup[0]] = tup[1].rstrip()
     print('Done', config)
 
-if os.path.isfile(os.path.expanduser('~/.fedit')):
+if os.path.isfile(FNCONF):
     load_config_file()
 else:
     print('First time running Fedit, creating config file...', end=' ')
-    config_file_obj = open(os.path.expanduser('~/.fedit'), 'w')
-    print(os.path.expanduser('~/.fedit'))
+    config_file_obj = open(FNCONF, 'w')
+    print(FNCONF)
     import requests
     data = requests.get('https://smallbytes.pythonanywhere.com/Fedit/newuser')
     config_file_obj.write(str(data.content, encoding='ascii'))
