@@ -4,7 +4,7 @@ from tktools import os, tk, sys
 from tkinter import colorchooser, messagebox
 from ast import literal_eval
 
-version = '0.0.1.5'
+version = '0.0.1.6'
 
 print('Starting Fedit', version)
 FNCONF = os.path.expanduser('~/.fedit')
@@ -41,7 +41,7 @@ else:
     config_file_obj.write(str(data.content, encoding='ascii'))
     config_file_obj.close()
     load_config_file()
-print(config)
+themes = literal_eval(config['Themes'])
 
 ## Main text editor
 frame_maintextedit = tk.Frame(root)
@@ -64,15 +64,27 @@ menubar.grid_button('new', row=0, column=3)
 ## Main text editor
 widget_maintextedit.pack(expand=1, fill='both')
 
+## LabelBar
+frame_labelbar = tk.Frame(root)
+labelbar = tktools.LabelBar(frame_labelbar)
+
+labelbar.add_label('chars', '0')
+labelbar.grid_label('chars', row=0)
+labelbar.config_label('chars', bg=themes[False]['buttons'], fg=themes[False]['buttons_text'])
+
+def update_labelbar_chars(*args, **kwargs):
+    labelbar.config_label('chars', text=str(len(widget_maintextedit.widget_raw().get(0.0, 'end'))-1))
+widget_maintextedit.widget_raw().bind('<Any-KeyRelease>', update_labelbar_chars)
+
 ## Theme
 theme_current = False #False=Light True=Dark
-themes = literal_eval(config['Themes'])
 
 def update_theme(theme, text_theme, button_theme, button_text_theme, custom=0):
     print('Custom:', custom, 'BG:', theme, 'FG:', text_theme)
     root.config(bg=theme)
     widget_maintextedit.config(bg=theme, fg=text_theme, insertbackground=text_theme)
     frame_menubar.config(bg=theme)
+    frame_labelbar.config(bg=theme)
     for button in menubar.buttons:
         menubar.buttons[button]['raw'].config(bg=button_theme, fg=button_text_theme)
 
@@ -124,27 +136,10 @@ menubar.add_button('emojis', emoji_window, '☺')
 menubar.grid_button('emojis', row=0, column=5)
 
 
-## Experimental
-changing_theme = [0, 0, 0]
-def changing_theme_func():
-    global changing_theme
-    for i, item in enumerate(changing_theme):
-        item += 1
-        if item > 255:
-            item = 0
-            #changing_theme[i] = item
-        else:
-            changing_theme[i] = item
-            break
-    if changing_theme == [255,255,255]:
-        changing_theme = [0,0,0]
-    update_theme('#%02x%02x%02x' % tuple(changing_theme), '#000000')
-    root.after(10, changing_theme_func)
-#changing_theme_func()
-
 ## Packing
 frame_menubar.pack(side='top', expand=1, fill='both')
 frame_maintextedit.pack(expand=1, fill='both')
+frame_labelbar.pack(side='bottom', expand=1, fill='both')
 
 ## Complete exit
 def complete_exit():
