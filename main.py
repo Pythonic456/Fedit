@@ -115,23 +115,6 @@ switch_theme()
 
 menubar.grid_button('prefs', row=0, column=4)
 
-## Experimental
-changing_theme = [0, 0, 0]
-def changing_theme_func():
-    global changing_theme
-    for i, item in enumerate(changing_theme):
-        item += 1
-        if item > 255:
-            item = 0
-            #changing_theme[i] = item
-        else:
-            changing_theme[i] = item
-            break
-    if changing_theme == [255,255,255]:
-        changing_theme = [0,0,0]
-    update_theme('#%02x%02x%02x' % tuple(changing_theme), '#000000')
-    root.after(10, changing_theme_func)
-#changing_theme_func()
 
 ## Packing
 frame_menubar.pack(side='top', expand=1, fill='both')
