@@ -129,8 +129,9 @@ def emoji_window():
     win = tktools.Window('Emojis', root_win=root).window_raw()
     for row, echunk in enumerate(chunks(emojis, 10)):
         for col, ecode in enumerate(echunk):
-            b = tk.Button(win, text=chr(ecode),
-                command=lambda ecode=ecode: widget_maintextedit.widget.insert(tk.INSERT, chr(ecode)))
+            b = tk.Button(win, command=lambda ecode=ecode: widget_maintextedit.widget.insert(tk.INSERT, chr(ecode)))
+            # b['text'] = chr(ecode) # Does not work in Python 3.7
+            b.tk.eval('%s configure -text "%s"' % (b._w, chr(ecode)))
             b.grid(column=col, row=row)
 menubar.add_button('emojis', emoji_window, '☺')
 menubar.grid_button('emojis', row=0, column=5)
