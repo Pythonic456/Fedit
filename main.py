@@ -133,6 +133,8 @@ def emoji_window():
             # b['text'] = chr(ecode) # Does not work in Python 3.7
             b.tk.eval('%s configure -text "%s"' % (b._w, chr(ecode)))
             b.grid(column=col, row=row)
+    info_label = tk.Label(win, text='This may not work as expected, use at your own risk')
+    info_label.grid(column=0, row=8, columnspan=10)
 menubar.add_button('emojis', emoji_window, '☺')
 menubar.grid_button('emojis', row=0, column=5)
 
