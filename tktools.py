@@ -28,6 +28,28 @@ class Window:
         return self.win
 
 
+# Backwards compat monkey-patch for Python 3.7 or less
+if sys.version_info[:2] < (3, 8):
+    # Insert high unicode (>BMP) into Text widget
+    def text_insert_high(self, index, chars, *args):
+        print('text_insert_high() called')
+        if not chars:
+            return
+        if ord(max(chars)) <= 0xffff:
+            return self.text_insert_original(index, chars, *args)
+        return self.tk.eval('%s insert %s "%s"' % (self._w, index, chars.replace('"', '\\"')))
+    tk.Text.text_insert_original = tk.Text.insert
+    tk.Text.insert = text_insert_high
+    
+    # Get high unicode (>BMP) from Text widget, and decode any surrogate-pairs
+    def text_get_high(self, index1, index2=None):
+        chars = self.text_get_original(index1, index2)
+        chars = chars.encode('utf-16', 'surrogatepass').decode('utf-16')
+        return chars
+    tk.Text.text_get_original = tk.Text.get
+    tk.Text.get = text_get_high
+
+
 class TextEditor:
     def __init__(self, parent, root_title, set_root_title):
         ## Init

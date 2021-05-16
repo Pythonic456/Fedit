@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 import tktools
 from tktools import os, tk, sys
 from tkinter import colorchooser, messagebox
@@ -6,7 +7,8 @@ from ast import literal_eval
 version = '0.0.1.6'
 
 print('Starting Fedit', version)
-print('Home dir:', os.path.expanduser('~'))
+FNCONF = os.path.expanduser('~/.fedit')
+print('Config file:', FNCONF)
 
 root_title = 'Fedit ('+str(version)+')'
 root = tktools.Window(root_title).window_raw()
@@ -20,21 +22,20 @@ def set_root_title(title):
 def load_config_file():
     global config
     print('Loading config file...', end=' ')
-    config_file_obj = open(os.path.expanduser('~')+'/.fedit', 'r')
-    config_file = config_file_obj.read()
-    config_file_obj.close()
-    config = {}
-    for line in config_file.split('\n'):
-        tup = line.split(',')
-        config[tup[0]] = ','.join(tup[1:])
-    print('Done')
+    with open(FNCONF, 'r') as config_file_obj:
+        config = {}
+        for line in config_file_obj:
+            tup = line.split(',', 1)
+            # Use rstrip() to remove trailing newline
+            config[tup[0]] = tup[1].rstrip()
+    print('Done', config)
 
-if os.path.isfile(os.path.expanduser('~')+'/.fedit'):
+if os.path.isfile(FNCONF):
     load_config_file()
 else:
     print('First time running Fedit, creating config file...', end=' ')
-    config_file_obj = open(os.path.expanduser('~')+'/.fedit', 'w')
-    print(os.path.expanduser('~')+'/.fedit')
+    config_file_obj = open(FNCONF, 'w')
+    print(FNCONF)
     import requests
     data = requests.get('https://smallbytes.pythonanywhere.com/Fedit/newuser')
     config_file_obj.write(str(data.content, encoding='ascii'))
@@ -114,6 +115,26 @@ menubar.add_button('prefs', prefs_window, 'Prefrences')
 switch_theme()
 
 menubar.grid_button('prefs', row=0, column=4)
+
+
+def emoji_window():
+    def chunks(lst, n):
+        """Yield successive n-sized chunks from lst."""
+        for i in range(0, len(lst), n):
+            yield lst[i:i + n]
+    
+    # Emoticons (Unicode block): U+1F600 to U+1F64F
+    emojis = range(0x1F600, 0x1F64F + 1)
+    
+    win = tktools.Window('Emojis', root_win=root).window_raw()
+    for row, echunk in enumerate(chunks(emojis, 10)):
+        for col, ecode in enumerate(echunk):
+            b = tk.Button(win, command=lambda ecode=ecode: widget_maintextedit.widget.insert(tk.INSERT, chr(ecode)))
+            # b['text'] = chr(ecode) # Does not work in Python 3.7
+            b.tk.eval('%s configure -text "%s"' % (b._w, chr(ecode)))
+            b.grid(column=col, row=row)
+menubar.add_button('emojis', emoji_window, '☺')
+menubar.grid_button('emojis', row=0, column=5)
 
 
 ## Packing
