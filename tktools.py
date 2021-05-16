@@ -28,6 +28,25 @@ class Window:
         return self.win
 
 
+# Detect broken Tk 8.6.9 which fails to handle high unicode characters (>BMP 0xffff)
+# -> boolean
+def is_high_unicode_ok(rootwin, verb=0):
+    ttest = tk.Text(rootwin)
+    u = chr(0x1F600)
+    try:
+        ttest.insert(tk.END, u)
+        u2 = ttest.get('0.0', tk.END)[:-1]
+    except:
+        if verb:
+            print('is_high_unicode_ok: Exception: %s' % (sys.exc_info()[1],))
+        return False
+    finally:
+        ttest.destroy()
+    if verb:
+        print('is_high_unicode_ok: Expect %r, Got %r, OK %s' % (u, u2, u == u2))
+    return u == u2
+
+
 # Backwards compat monkey-patch for Python 3.7 or less
 if sys.version_info[:2] < (3, 8):
     # Insert high unicode (>BMP) into Text widget
@@ -37,6 +56,7 @@ if sys.version_info[:2] < (3, 8):
             return
         if ord(max(chars)) <= 0xffff:
             return self.text_insert_original(index, chars, *args)
+        # TODO: better escaping of 'chars' (e.g. escape backslashes, check TCL escaping rules)
         return self.tk.eval('%s insert %s "%s"' % (self._w, index, chars.replace('"', '\\"')))
     tk.Text.text_insert_original = tk.Text.insert
     tk.Text.insert = text_insert_high
