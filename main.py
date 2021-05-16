@@ -123,17 +123,27 @@ def emoji_window():
         for i in range(0, len(lst), n):
             yield lst[i:i + n]
     
+    emojis = [
+        '\u2639', # WHITE FROWNING FACE
+        '\u263a', # WHITE SMILING FACE
+        '\u263b', # BLACK SMILING FACE
+        '\u263c', # WHITE SUN WITH RAYS
+        '\u263d', # FIRST QUARTER MOON
+        '\u263e', # LAST QUARTER MOON
+    ]
+    
     # Emoticons (Unicode block): U+1F600 to U+1F64F
-    emojis = range(0x1F600, 0x1F64F + 1)
+    if tktools.is_high_unicode_ok(root, verb=1):
+        emojis.extend([chr(i) for i in range(0x1F600, 0x1F64F + 1)])
     
     win = tktools.Window('Emojis', root_win=root).window_raw()
     for row, echunk in enumerate(chunks(emojis, 10)):
-        for col, ecode in enumerate(echunk):
-            b = tk.Button(win, command=lambda ecode=ecode: widget_maintextedit.widget.insert(tk.INSERT, chr(ecode)))
-            # b['text'] = chr(ecode) # Does not work in Python 3.7
-            b.tk.eval('%s configure -text "%s"' % (b._w, chr(ecode)))
+        for col, ucode in enumerate(echunk):
+            b = tk.Button(win, command=lambda ucode=ucode: widget_maintextedit.widget.insert(tk.INSERT, ucode))
+            # b['text'] = ucode # Does not work in Python 3.7
+            b.tk.eval('%s configure -text "%s"' % (b._w, ucode))
             b.grid(column=col, row=row)
-menubar.add_button('emojis', emoji_window, '☺')
+menubar.add_button('emojis', emoji_window, '\u263a')
 menubar.grid_button('emojis', row=0, column=5)
 
 
